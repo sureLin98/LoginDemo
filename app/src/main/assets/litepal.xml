@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="Account"/>
+    <version value="1"/>
+
+    <list>
+        <mapping class="com.test.android.Account"/>
+    </list>
+
+</litepal>
