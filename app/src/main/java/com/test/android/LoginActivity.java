@@ -60,8 +60,9 @@ public class LoginActivity extends AppCompatActivity{
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                String s=prf.getString("username",null);
                 //如果已登录就直接启动MainActivity
-                if(prf.getBoolean("is_login",false)){
+                if(s!=null){
                     Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -141,6 +142,8 @@ public class LoginActivity extends AppCompatActivity{
                                             account.setPassword(seconfPassword);
                                             account.setUsername(un);
                                             account.save();
+                                            editor.putString("username",un);
+                                            editor.apply();
                                             username.setText(un);
                                             password.setText(seconfPassword);
                                         }else{
@@ -176,12 +179,13 @@ public class LoginActivity extends AppCompatActivity{
                                             Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
                                             //启动主界面
                                             Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                                            intent.putExtra("username",u);
                                             startActivity(intent);
-                                            finish();
 
-                                            editor.putBoolean("is_login",true);
+                                            editor.putString("username",account.getUsername());
                                             editor.apply();
 
+                                            finish();
                                         }else {
                                             Toast.makeText(LoginActivity.this,"密码错误",Toast.LENGTH_SHORT).show();
                                         }

@@ -1,18 +1,24 @@
 package com.test.android;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
 
     List<View> viewList=new ArrayList<>();
+
+    NavigationView navigationView;
+
+    ImageView imageView;
+
+    TextView username;
+
+    DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +50,22 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         toolbar.setTitle("主界面");
         setSupportActionBar(toolbar);
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.mipmap.nav);
+        }
 
         viewPager = findViewById(R.id.view_pager);
+        navigationView=findViewById(R.id.navigation_view);
+        View navHeader=navigationView.getHeaderView(0);
+        imageView=navHeader.findViewById(R.id.nav_image);
+        username=navHeader.findViewById(R.id.nav_username);
+        drawerLayout=findViewById(R.id.drawer_layout);
+
+        SharedPreferences prf=getSharedPreferences("com.test.SettingData",MODE_PRIVATE);
+        Log.d("tag", "onCreate: username="+prf.getString("username","000"));
+        username.setText(prf.getString("username",null));
 
         View view1 = getLayoutInflater().inflate(R.layout.layout_1, null);
         View view2 = getLayoutInflater().inflate(R.layout.layout_2, null);
@@ -76,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
 
-        final BottomNavigationView navigationView = findViewById(R.id.bottomnavigationview);
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.bottomnavigationview);
 
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
@@ -110,16 +138,16 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int i) {
                 switch (i){
                     case 0:
-                        navigationView.setSelectedItemId(R.id.interface_1);
+                        bottomNavigationView.setSelectedItemId(R.id.interface_1);
                         break;
                     case 1:
-                        navigationView.setSelectedItemId(R.id.interface_2);
+                        bottomNavigationView.setSelectedItemId(R.id.interface_2);
                         break;
                     case 2:
-                        navigationView.setSelectedItemId(R.id.interface_3);
+                        bottomNavigationView.setSelectedItemId(R.id.interface_3);
                         break;
                     case 3:
-                        navigationView.setSelectedItemId(R.id.interface_4);
+                        bottomNavigationView.setSelectedItemId(R.id.interface_4);
                         break;
                 }
 
@@ -131,6 +159,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                drawerLayout.openDrawer(Gravity.START);
+                break;
+        }
+        return false;
+    }
 }

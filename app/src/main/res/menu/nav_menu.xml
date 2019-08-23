@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:title="功能1"
+            android:icon="@mipmap/ic_launcher_round"/>
+
+        <item
+            android:title="功能2"
+            android:icon="@mipmap/ic_launcher_round"/>
+
+        <item
+            android:title="功能3"
+            android:icon="@mipmap/ic_launcher_round"/>
+
+        <item
+            android:title="功能4"
+            android:icon="@mipmap/ic_launcher_round"/>
+
+    </group>
+
+</menu>
